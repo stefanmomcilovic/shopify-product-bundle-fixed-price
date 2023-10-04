@@ -1,0 +1,583 @@
+<style>
+    .bundle-box-container {
+        max-width: 1200px;
+        width: 100%;
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .bundle-products-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+        max-width: 60%;
+    }
+
+    .bundle-product {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bundle-product-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .add-product-to-bundle-box-btn {
+        background-color: {{ section.settings.addButtonBGColor }};
+        color: {{ section.settings.addButtonTextColor }};
+        border: none;
+        padding: 5px 25px;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+    .view-bundle-product-details {
+        color: {{ section.settings.viewDetailsTextColor }};
+        text-decoration: none;
+        border-bottom: 1px solid {{ section.settings.viewDetailsTextColor }};
+        margin: 0 auto 8px;
+        line-height: 1.5;
+        font-weight:900;
+        cursor: pointer;
+    }
+
+    .bundle-form-wrapper {
+        max-width: 40%;
+        width: 100%;
+        height: 100%;
+        background-color: {{ section.settings.bundleBGColor }};
+        padding: 25px;
+    }
+
+    .bundle-form-content {
+        display: flex;
+        flex-direction: column; 
+    }
+
+    .bundle-form-cart-items {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .bundle-form-item {
+        width: 32.5%;
+        min-height: 180px;
+        border: 1px dashed {{ section.settings.bundleBoxBorderColor }};
+        margin-right: .5%;
+        margin-bottom: .5%;
+        display: flex !important;
+        align-items: center;   
+        justify-content: center;
+    }
+
+    .bundle-form-buttons {
+        margin-top: 1rem;
+    }
+
+    .btn-add-bundle-box-to-cart {
+        background: {{ section.settings.addBundleBoxToCartBGColor }};
+        color: {{ section.settings.addBundleBoxToCartTextColor }};
+        border: none;
+        text-transform: uppercase;
+        padding: 10px 18px;
+        cursor: pointer;
+    }
+
+    .btn-add-bundle-box-to-cart[disabled] {
+        opacity: 0.5;
+    }
+
+    .bundle-form-item .product-item {
+        position: relative;
+    }
+
+    .bundle-form-item .product-item img { 
+        max-width: 100%;
+    }
+
+    .bundle-form-item .product-item .remove-wrap .remove {
+        position: absolute;
+        padding: 0 4px;
+        background-color: {{ section.settings.removeItemBGColor }};
+        color: {{ section.settings.removeItemTextColor }};
+        top: 5px;
+        left: 5px;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 12px;
+        text-decoration: none;
+    }
+    .bundle-box-mobile-container {
+        display: none;
+    }
+    @media screen and (max-width: 1014px) {
+        .bundle-box-mobile-container {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999999;
+        }
+
+        .bundle-form-mobile {
+            height: auto;
+            display: inline-block;
+            background-color: #00000024;
+            margin: 0 auto 0 0;
+            width: 100%;
+        }
+
+        .bundle-items-mobile {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .bundle-form-mobile .bundle-items-mobile .product-item-mobile {
+            position: relative;
+            max-width: 100px;
+            width: 100%;
+            height: auto;
+            margin-right: 3rem;
+        }
+
+        .bundle-form-mobile .bundle-items-mobile .product-item-mobile .remove-wrap .remove {
+            position: absolute;
+            padding: 0 4px;
+            background-color: {{ section.settings.removeItemBGColor }};
+            color: {{ section.settings.removeItemTextColor }};
+            top: 5px;
+            left: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .bundle-form-mobile-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            padding: 12px 50px;
+            background-color: {{ section.settings.bundleBGColor }};
+            -webkit-box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.75);
+            box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.75)
+        }
+
+        .bundle-box-container { 
+            padding: 0 50px;
+        }
+
+        .bundle-form-cart,
+        .bundle-form-buttons {
+            display: none;
+        }
+
+        .bundle-box-container {
+            flex-direction: column-reverse;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bundle-products-container,
+        .bundle-form-wrapper {
+            max-width: 100%;
+        }
+
+        .bundle-product {
+            width: 33.33%;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .bundle-product {
+            width: 50%;
+        }
+        /*
+        .bundle-product img {
+            width: 100%;
+            max-width: 100%;
+        }
+        */
+
+        .product-item-mobile img {
+            max-height: 110px;
+            object-fit: cover;
+            height: 100%;
+            width: 66px;
+        }
+
+        .bundle-items-mobile {
+            justify-content: center;
+            padding: 0;
+        }
+
+        .bundle-form-mobile .bundle-items-mobile .product-item-mobile {
+            margin: 0;
+            max-width: 62px;
+        }
+    }
+</style>
+
+<div class="bundle-box-mobile-container">
+    <div class="bundle-form-mobile">
+        <div class="bundle-items-mobile"></div>
+    </div>
+    <div class="bundle-form-mobile-buttons">
+        <button class="btn-add-bundle-box-to-cart" disabled>{{ section.settings.addBundleBoxToCartText }} {{ product.selected_or_first_available_variant.price | money }}</button>
+    </div>
+</div>
+<div class="bundle-box-container">
+    <div class="bundle-products-container">
+        {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+                {% if block.type == "product" %}
+                    {%- assign bundleProduct = block.settings.bundleProduct -%}
+                    {%- assign media = bundleProduct.featured_media -%}
+
+                    <div class="bundle-product" data-product-name="{{ bundleProduct.title }}" data-product-url="{{ bundleProduct.selected_or_first_available_variant.url }}" data-product-id="{{ bundleProduct.id }}" data-variant-id="{{ bundleProduct.selected_or_first_available_variant.id }}" data-product-img="{{ media.preview_image | image_url: width: 120 }}">
+                        {%- if bundleProduct.featured_media != null -%}
+                            {{ media.preview_image | image_url: width: 200 | image_tag: loading: "lazy" }}
+                            <div class="bundle-product-details">
+                                <button class="add-product-to-bundle-box-btn">
+                                    {{ section.settings.buttonText }}
+                                </button>
+                                {% if bundleProduct.selected_or_first_available_variant.url != null %}
+                                    <p>
+                                        <a href="{{ bundleProduct.selected_or_first_available_variant.url }}" class="view-bundle-product-details">
+                                            {{ section.settings.viewDetailsText }}
+                                        </a>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {%- endif -%}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="bundle-form-wrapper">
+        <div class="bundle-form-content">
+            <div class="bundle-form-body">
+                <h1 class="bundle-product-title">{{ product.title }}</h1>
+                <div class="bundle-product-description">{{ product.description }}</div>
+            </div>
+            <div class="bundle-form-cart">
+                <div class="bundle-form-cart-items">
+                    {% if section.blocks.size > 0 %}
+                        {% for block in section.blocks %}
+                            {% if block.type == "product" %}
+                                <div class="bundle-form-item"></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="bundle-form-buttons">
+                <button class="btn-add-bundle-box-to-cart" disabled>{{ section.settings.addBundleBoxToCartText }} {{ product.selected_or_first_available_variant.price | money }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" defer>
+document.addEventListener("DOMContentLoaded", function () {
+    // Define a variable to store the selected products in the bundle
+    const selectedProducts = [];
+
+    const addBundle = (event) => {
+        event.preventDefault();
+
+        let bundleItem = event.target.closest(".bundle-product");
+        let productId = bundleItem.getAttribute("data-product-id");
+        let productImage = bundleItem.getAttribute("data-product-img");
+        let productName = bundleItem.getAttribute("data-product-name");
+        let productUrl = `${window.location.origin}${bundleItem.getAttribute("data-product-url")}`;
+
+        handleDisplayAddedItems(productId, productImage, productName, productUrl);
+    };
+
+    const addButtons = document.querySelectorAll('.add-product-to-bundle-box-btn');
+
+    if (addButtons.length > 0) {
+        for (let i = 0; i < addButtons.length; i++) {
+            let currentButton = addButtons[i];
+
+            currentButton.addEventListener("click", addBundle);
+        }
+    }
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    function generateString(length) {
+        let result = " ";
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
+
+    const handleDisplayAddedItems = (productId, productImage, productName, productUrl) => {
+        let remove_id = generateString(12);
+
+        let bundleItems = document.querySelectorAll(
+            '.bundle-form-cart .bundle-form-item:not([data-fill="true"])'
+        );
+
+        if (bundleItems.length > 0) {
+            let mobile = document.querySelector(".bundle-items-mobile");
+
+            let bundleMobileOutput = `<div class="product-item-mobile" bundle-product-id="${productId}" bundle-product-name="${productName}" bundle-product-image="${productImage}" bundle-product-url="${productUrl}">
+                <img src="${productImage}">
+                <div class="remove-wrap">
+                <a href="#" data-bundle-remove="${remove_id}" class="remove">✕</a>
+                </div>
+            </div>`;
+
+            mobile.innerHTML += bundleMobileOutput;
+
+            let bundleItemOutput = `<div class="product-item" undle-product-id="${productId}" bundle-product-name="${productName}" bundle-product-image="${productImage}" bundle-product-url="${productUrl}">
+                  <img src="${productImage}">
+                  <div class="remove-wrap">
+                    <a href="#" data-bundle-remove="${remove_id}" class="remove">✕</a>
+                  </div>
+                </div>`;
+
+            let nextBundleItem = bundleItems[0];
+
+            atcStateHandler("disallow");
+
+            nextBundleItem.setAttribute("data-fill", true);
+
+            nextBundleItem.innerHTML = bundleItemOutput;
+
+            if (bundleItems.length == 1) {
+                atcStateHandler("allow");
+            }
+        } else {
+            atcStateHandler("allow");
+        }
+    };
+
+    window.addEventListener("click", (event) => {
+        if (event.target.hasAttribute("data-bundle-remove")) {
+            event.preventDefault();
+            let removeId = event.target.getAttribute("data-bundle-remove");
+            let htmlElements = document.querySelectorAll(
+                `[data-bundle-remove="${removeId}"]`
+            );
+            for (let i = 0; i < htmlElements.length; i++) {
+                let currentElement = htmlElements[i];
+                let bundleItem = currentElement.closest(".bundle-form-item");
+                let productItem = currentElement.closest(".product-item") || currentElement.closest(".product-item-mobile");
+                let productId = productItem.getAttribute("bundle-product-id");
+
+                if (bundleItem) {
+                    bundleItem.removeAttribute("data-fill");
+                    bundleItem.innerHTML = "";
+                } else {
+                    bundleItem = currentElement.closest(".product-item-mobile");
+                    bundleItem.remove();
+                }
+            }
+
+            atcStateHandler("disallow");
+        }
+    });
+
+    let addToCartBtns = document.querySelectorAll(".btn-add-bundle-box-to-cart");
+
+    addToCartBtns.forEach((addToCart) => {
+        addToCart.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            if (addToCart.hasAttribute("disabled")) return;
+            const selectedProducts = [];
+            const productInBundleBox = document.querySelectorAll(".product-item-mobile");
+            // Return what you need for lineItems properties in this example we only need the product names
+            productInBundleBox.forEach((product) => {
+                let productName = product.getAttribute("bundle-product-name");
+                let productUrl = product.getAttribute("bundle-product-url");
+                let productImage = product.getAttribute("bundle-product-image");
+                let productId = product.getAttribute("bundle-product-id");
+                selectedProducts.push({
+                    productName,
+                    productUrl,
+                    productImage,
+                    productId
+                });
+            });
+            const lineItems = selectedProducts.map((selectedProduct, index) => {
+                if(index < selectedProducts.length - 1){
+                    return selectedProduct.productName + ', ';
+                }else {
+                    return selectedProduct.productName;
+                }
+            });
+            // Use the Shopify AJAX API to add the bundle to the cart
+            const response = await fetch('/cart/add.js', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    items: [{
+                        quantity: 1,
+                        id: {{ product.selected_or_first_available_variant.id }},
+                        properties: {
+                            "Bundle pack": lineItems
+                        }
+                    }]
+                })
+            });
+
+            if(response.ok) {
+                // Change this as per your need
+                window.location.href = '/cart';
+            } else {
+                console.log('Something went wrong', response);
+            }
+        });
+    });
+
+    let atcStateHandler = (status) => {
+        addToCartBtns.forEach((item) => {
+            if (status == "allow") {
+                item.removeAttribute("disabled");
+            } else {
+                item.setAttribute("disabled", true);
+            }
+        });
+    };
+});
+</script>
+
+{% schema %}
+{
+    "name": "Product Bundle Box",
+    "max_blocks": 6,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Product Bundle Box"
+        },
+        {
+            "type": "text",
+            "id": "buttonText",
+            "label": "Button Text",
+            "default": "Add"
+        },
+        {
+            "type": "color",
+            "label": "Choose a background color for Button",
+            "id": "addButtonBGColor",
+            "default": "#000000"
+        },
+        {
+            "type": "color",
+            "label": "Choose a text color for Button",
+            "id": "addButtonTextColor",
+            "default": "#ffffff"
+        },
+        {
+            "type": "text",
+            "id": "viewDetailsText",
+            "label": "View Details Text",
+            "default": "View More"
+        },
+        {
+            "type": "color",
+            "label": "Choose a text color for View Details Text",
+            "id": "viewDetailsTextColor",
+            "default": "#000000"
+        },
+        {
+            "type": "header",
+            "content": "Bundle Box"
+        },
+        {
+            "type": "color",
+            "id": "bundleBGColor",
+            "label": "Choose a background color for Bundle Box",
+            "default": "#ebeef0"
+        },
+        {
+            "type": "color",
+            "id": "bundleBoxBorderColor",
+            "label": "Choose a border color for Bundle Box",
+            "default": "#000000"
+        },
+        {
+            "type": "text",
+            "id": "addBundleBoxToCartText",
+            "label": "Add To Cart Text",
+            "default": "Add To Cart"
+        },
+        {
+            "type": "color",
+            "id": "addBundleBoxToCartBGColor",
+            "label": "Choose a background color for Add To Cart Button",
+            "default": "#000000"
+        },
+        {
+            "type": "color",
+            "id": "addBundleBoxToCartTextColor",
+            "label": "Choose a text color for Add To Cart Button",
+            "default": "#ffffff"
+        },
+        {
+            "type": "header",
+            "content": "Remove item from bundle box"
+        },
+        {
+            "type": "color",
+            "id": "removeItemBGColor",
+            "label": "Choose a background color for Remove Item Button",
+            "default": "#000000"
+        },
+        {
+            "type": "color",
+            "id": "removeItemTextColor",
+            "label": "Choose a text color for Remove Item Button",
+            "default": "#ffffff"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "bundleProduct",
+                    "label": "Product"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Product Bundle Box"
+        }
+    ]
+}
+{% endschema %}
